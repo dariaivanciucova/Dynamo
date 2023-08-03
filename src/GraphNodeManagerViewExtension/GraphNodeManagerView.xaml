@@ -38,7 +38,8 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto" ></RowDefinition>
         </Grid.RowDefinitions>
 
         <!-- Search Bar -->
@@ -62,43 +63,6 @@
                     </ItemsControl.ItemsPanel>
                 </ItemsControl>
             </Grid>
-
-            <!-- Export Button -->
-            <Image x:Name="ExportImage"
-                       DockPanel.Dock="Right" 
-                       Width="16px"
-                       Height="16px"
-                       Margin="0 0 15 15"
-                       HorizontalAlignment="Right"
-                       VerticalAlignment="Center"
-                       Source="/GraphNodeManagerViewExtension;component/Images/Export.png"
-                       Stretch="UniformToFill"
-                       MouseUp="ExportImage_OnMouseUp"
-                       Cursor="Hand">
-                <Image.ContextMenu>
-                    <ContextMenu Name="MainContextMenu"
-                                     Margin="0 -10"
-                                     Style="{StaticResource ContextMenuStyle}"
-                                     Background="#666666"
-                                     Width="170">
-                        <MenuItem x:Name="CSVItem" Header="{x:Static p:Resources.MenuItemExportAsCSV}" Padding="10" FontSize="12"
-                                      Command="{Binding ExportCommand}" CommandParameter="CSV"/>
-                        <MenuItem x:Name="JSONItem" Header="{x:Static p:Resources.MenuItemExportAsJSON}" Padding="10" FontSize="12"
-                                      Command="{Binding ExportCommand}" CommandParameter="JSON"/>
-                    </ContextMenu>
-                </Image.ContextMenu>
-                <Image.ToolTip>
-                    <controls1:DynamoToolTip AttachmentSide="Bottom" Style="{DynamicResource ResourceKey=SLightToolTip}">
-                        <Grid>
-                            <TextBlock MaxWidth="320"
-                                       Padding="5"
-                                       Foreground="Black" FontSize="12"
-                                       Text="{Binding IsAnyFilterOn, Converter={StaticResource BooleanToToolTipTextConverter}, UpdateSourceTrigger=PropertyChanged}"
-                                       TextWrapping="Wrap" />
-                        </Grid>
-                    </controls1:DynamoToolTip>
-                </Image.ToolTip>
-            </Image>
 
             <!-- Clear Filter Button -->
             <Button x:Name="ClearFiltersButton"
@@ -124,7 +88,7 @@
                   Background="{StaticResource ExtensionBackgroundColor}"
                   BorderThickness="0"
                   AlternationCount="2"
-                  FontSize="10"
+                  FontSize="12"
                   FontFamily="{StaticResource ArtifaktElementBold}"
                   Foreground="{StaticResource DarkThemeBodyMediumBrush}"
                   SelectionUnit="FullRow"
@@ -152,9 +116,7 @@
                             <StackPanel>
                                 <TextBlock 
                                     Text="{Binding Name}"
-                                    Foreground="#BBBBBB"
                                     Margin="10 3 3 3"
-                                    FontSize="12"
                                 />
                             </StackPanel>
                         </DataTemplate>
@@ -176,7 +138,7 @@
                                 <!-- Node Name -->
                                 <TextBlock 
                                     Text="{Binding Name}"
-                                    FontWeight="Light"
+                                    FontSize="11"
                                     Foreground="{StaticResource DarkThemeBodyMediumBrush}"
                                     Margin="3 0 0 0"
                                     DockPanel.Dock="Left"></TextBlock>
@@ -324,7 +286,7 @@
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
                                         <Border BorderThickness="0 1 0 0" BorderBrush="{StaticResource GrayOpacityBrush}">
-                                                <Grid VerticalAlignment="Center" Margin="10 15 10 20" >
+                                            <Grid VerticalAlignment="Center" Margin="10 15 10 20" >
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="Auto"></ColumnDefinition>
                                                     <ColumnDefinition Width="*"></ColumnDefinition>
@@ -391,5 +353,44 @@
             </DataGrid.RowDetailsTemplate>
 
         </DataGrid>
+
+        <!--Export Button-->
+        <DockPanel Grid.Row="3">
+            <Grid DockPanel.Dock="Top">
+                <Button x:Name="ExportButton"
+                    Content="Export"
+                        Width="34"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top"                      
+                        Margin="0 3 7 15"
+                        FontSize="11"
+                        FontWeight="Regular"
+                        Style="{StaticResource ButtonStyle1}"
+                        Click="ExportButton_OnClick"
+                        Cursor="Hand">
+                    <Button.ContextMenu>
+                        <ContextMenu Name="MainContextMenu"
+                                     Margin="0 -10"
+                                     Style="{StaticResource ContextMenuStyle}"
+                                     Background="{StaticResource MidGrayBrush}"
+                                     Width="170">
+                            <MenuItem Name="CSVItem"
+                                      Header="{x:Static p:Resources.MenuItemExportAsCSV}"
+                                      Padding="10"
+                                      FontSize="12"
+                                      Command="{Binding ExportCommand}"
+                                      CommandParameter="CSV"/>
+                            <MenuItem Name="JSONItem"
+                                      Header="{x:Static p:Resources.MenuItemExportAsJSON}"
+                                      Padding="10"
+                                      FontSize="12"
+                                      Command="{Binding ExportCommand}"
+                                      CommandParameter="JSON"/>
+
+                        </ContextMenu>
+                    </Button.ContextMenu>
+                </Button>
+            </Grid>
+        </DockPanel>
     </Grid>
 </UserControl>

@@ -37,23 +37,6 @@ namespace Dynamo.GraphNodeManager
         }
 
         /// <summary>
-        /// Handles export image click function
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void ExportImage_OnMouseUp(object sender, MouseButtonEventArgs e)
-        {
-            if (e.ChangedButton == MouseButton.Left)
-            {
-                Image image = sender as Image;
-                ContextMenu contextMenu = image.ContextMenu;
-                contextMenu.PlacementTarget = image;
-                contextMenu.IsOpen = true;
-                e.Handled = true;
-            }
-        }
-
-        /// <summary>
         /// Handles DataGrid row click 
         /// </summary>
         /// <param name="sender"></param>
@@ -123,5 +106,16 @@ namespace Dynamo.GraphNodeManager
             Clipboard.SetText(message);
         }
 
+        /// <summary>
+        /// Handles export button click function
+        /// </summary>
+        private void ExportButton_OnClick(object sender, RoutedEventArgs e)
+        {         
+            Button button = sender as Button;
+            ContextMenu contextMenu = button.ContextMenu;
+            contextMenu.PlacementTarget = button;
+            contextMenu.IsOpen = true;
+            e.Handled = true;
+        }
     }
 }
