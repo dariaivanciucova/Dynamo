@@ -87,9 +87,8 @@
                   CanUserAddRows="False"
                   Background="{StaticResource ExtensionBackgroundColor}"
                   BorderThickness="0"
-                  AlternationCount="2"
-                  FontSize="12"
-                  FontFamily="{StaticResource ArtifaktElementBold}"
+                  AlternationCount="2"                
+                  FontFamily="{StaticResource ArtifaktElementRegular}"
                   Foreground="{StaticResource DarkThemeBodyMediumBrush}"
                   SelectionUnit="FullRow"
                   SelectionMode="Single"
@@ -100,7 +99,7 @@
                   CanUserSortColumns="True"
                   HeadersVisibility="Column"
                   MinColumnWidth="60"
-                  Margin="-3 0"
+                  Margin="0 0"
                   RowDetailsVisibilityMode="Collapsed"
                   IsReadOnly="True"
                   VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Recycling" >
@@ -109,36 +108,22 @@
                     <EventSetter Event="PreviewMouseLeftButtonUp" Handler="Row_PreviewClickHandler"/>
                 </Style>
             </DataGrid.Resources>
-            <DataGrid.GroupStyle>
-                <GroupStyle>
-                    <GroupStyle.HeaderTemplate>
-                        <DataTemplate>
-                            <StackPanel>
-                                <TextBlock 
-                                    Text="{Binding Name}"
-                                    Margin="10 3 3 3"
-                                />
-                            </StackPanel>
-                        </DataTemplate>
-                    </GroupStyle.HeaderTemplate>
-                </GroupStyle>
-            </DataGrid.GroupStyle>
 
             <DataGrid.Columns>
-
                 <!-- Name -->
                 <DataGridTemplateColumn
                      Header="{x:Static p:Resources.HeaderNameName}"
                      IsReadOnly="True"
                      Width="6*">
-
+                   
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <DockPanel HorizontalAlignment="Stretch">
                                 <!-- Node Name -->
                                 <TextBlock 
                                     Text="{Binding Name}"
-                                    FontSize="11"
+                                    FontSize="11"                                 
+                                    FontFamily="{StaticResource ArtifaktElementBold}"
                                     Foreground="{StaticResource DarkThemeBodyMediumBrush}"
                                     Margin="3 0 0 0"
                                     DockPanel.Dock="Left"></TextBlock>
@@ -362,8 +347,7 @@
                         Width="34"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Top"                      
-                        Margin="0 3 7 15"
-                        FontSize="11"
+                        Margin="0 3 7 15"                        
                         FontWeight="Regular"
                         Style="{StaticResource ButtonStyle1}"
                         Click="ExportButton_OnClick"
