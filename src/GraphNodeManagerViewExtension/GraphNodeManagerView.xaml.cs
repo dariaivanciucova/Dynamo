@@ -101,7 +101,7 @@ namespace Dynamo.GraphNodeManager
 
             if (node == null || info == null) return;
 
-            var message = $"Node Name: {node.Name}\nPackage: {node.Package}\nDynamo Version: {dynamoVersion}\nHost: {hostProgram}\nMessages: {info.Message}\nState: {info.State}";
+            var message = $"Node Name: {node.Name}\nOriginal Node Name: {node.OriginalName}\nPackage: {node.Package}\nDynamo Version: {dynamoVersion}\nHost: {hostProgram}\nMessages: {info.Message}\nState: {info.State}";
 
             Clipboard.SetText(message);
         }
