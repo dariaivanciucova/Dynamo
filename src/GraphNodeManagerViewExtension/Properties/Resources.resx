@@ -223,6 +223,12 @@
   <data name="Title_PreviewOff" xml:space="preserve">
     <value>Preview off</value>
   </data>
+  <data name="Title_Package" xml:space="preserve">
+    <value>Package</value>
+  </data>
+  <data name="Title_IsOutputSingleItem" xml:space="preserve">
+    <value>Single item</value>
+  </data>
   <data name="Title_Warning" xml:space="preserve">
     <value>Warning</value>
   </data>

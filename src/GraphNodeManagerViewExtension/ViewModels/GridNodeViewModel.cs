@@ -44,9 +44,13 @@ namespace Dynamo.GraphNodeManager.ViewModels
         private ElementState state;
         private ObservableCollection<NodeInfo> nodeInfos = new ObservableCollection<NodeInfo>();
         private string package;
+        private bool isPartOfPackage;
+        private bool outputIsSingleItem;
         private Guid nodeGuid;
         private bool isRenamed = false;
-        
+        private string originalName = string.Empty;
+        private string topLevelItemsNumber = string.Empty;
+
         public delegate void EventHandler(object sender, EventArgs args);
         public event EventHandler BubbleUpdate = delegate { };
 
@@ -157,6 +161,37 @@ namespace Dynamo.GraphNodeManager.ViewModels
                 RaisePropertyChanged(nameof(StateIsFunction));
             }
         }
+
+        public bool IsOutputSingleItem
+        {
+            get
+            {
+                outputIsSingleItem = IsNodeOutputSingeItem(NodeModel.CachedValue);
+                return outputIsSingleItem;
+            }
+            internal set
+            {
+                if (outputIsSingleItem == value) return;
+                outputIsSingleItem = value;
+                RaisePropertyChanged(nameof(IsOutputSingleItem));
+            }
+        }
+
+        public string TopLevelItemsNumber
+        {
+            get
+            {
+                topLevelItemsNumber = GetTopLevelItemsNumber(NodeModel.CachedValue);
+                return topLevelItemsNumber;
+            }
+            internal set
+            {
+                if (topLevelItemsNumber == value) return;
+                topLevelItemsNumber = value;
+                RaisePropertyChanged(nameof(GetTopLevelItemsNumber));
+            }
+        }
+
 
         /// <summary>
         /// Node Has Warnings 
@@ -325,6 +360,23 @@ namespace Dynamo.GraphNodeManager.ViewModels
                 RaisePropertyChanged(nameof(IsRenamed));
             }
         }
+        /// <summary>
+        /// The original name of the node
+        /// </summary>
+        public string OriginalName
+        {
+            get
+            {
+                string originalName = NodeModel.GetOriginalName();
+                return originalName;
+            }
+            internal set
+            {
+                if (originalName == value) return;
+                originalName = value;
+                RaisePropertyChanged(nameof(OriginalName));
+            }
+        }
 
         /// <summary>
         /// The correct icon for the Info Bubble
@@ -378,6 +430,13 @@ namespace Dynamo.GraphNodeManager.ViewModels
             }
             internal set => package = value;
         }
+      /*  ///<summary>
+        ///Node is part of Package
+        /// </summary>
+        public bool IsPartOfPackage (MirrorData mirrorData)
+        {
+            return;
+        }*/
         /// <summary>
         /// The GUID of the Node
         /// </summary>
@@ -421,6 +480,54 @@ namespace Dynamo.GraphNodeManager.ViewModels
             }
             return false;
         }
+
+
+        public bool IsNodeOutputSingeItem(MirrorData mirrorData)
+        {
+
+            if (mirrorData == null) return false;
+            if (!mirrorData.IsCollection)
+            {
+                try
+                {
+                    /*var list = mirrorData.GetElements();*/
+                    var output = mirrorData.Data;
+                    
+                    if (output is object) return true;
+                    return false;
+                }
+                catch (Exception)
+                { return false; }
+            }
+            return false;
+        }
+
+
+        public string GetTopLevelItemsNumber(MirrorData mirrorData)
+        {
+            if (mirrorData == null) return string.Empty;
+            if (mirrorData.IsCollection)
+            {
+                try
+                {
+                    var list = mirrorData.GetElements();
+                    if (list.ToList().Count() == 1) return "[1]";
+                    else if (list.ToList().Count() == 2) return "[2]";
+                    else if (list.ToList().Count() == 3) return "[3]";
+                    else if (list.ToList().Count() == 4) return "[4]";
+                    else if (list.ToList().Count() == 5) return "[5]";
+                    else if (list.ToList().Count() == 6) return "[6]";
+                    else if (list.ToList().Count() == 7) return "[7]";
+                    else if (list.ToList().Count() == 8) return "[8]";
+                    else if (list.ToList().Count() == 9) return "[9]";
+                    else if (list.ToList().Count() > 9) return "[9+]";
+                    else return string.Empty;
+             
+                }
+                catch(Exception) { return string.Empty;}
+            }
+            return string.Empty;
+            }
 
         /// <summary>
         /// Returns true if the Node contains ANY (nested) null values

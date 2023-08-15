@@ -38,8 +38,8 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto" ></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="30" ></RowDefinition>
         </Grid.RowDefinitions>
 
         <!-- Search Bar -->
@@ -99,7 +99,7 @@
                   CanUserSortColumns="True"
                   HeadersVisibility="Column"
                   MinColumnWidth="60"
-                  Margin="0 0"
+                  Margin="0"
                   RowDetailsVisibilityMode="Collapsed"
                   IsReadOnly="True"
                   VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Recycling" >
@@ -113,6 +113,7 @@
                 <!-- Name -->
                 <DataGridTemplateColumn
                      Header="{x:Static p:Resources.HeaderNameName}"
+                     HeaderStyle="{StaticResource FirstColumnHeaderStyle1}" 
                      IsReadOnly="True"
                      Width="6*">
                    
@@ -155,14 +156,17 @@
                                 <Image Source="/GraphNodeManagerViewExtension;component/Images/Function.png" 
                                        ToolTip="{x:Static p:Resources.Title_Function}"
                                        Style="{StaticResource ImageStyle}"
+                                       Width="16"
                                        Visibility="{Binding StateIsFunction, Converter={StaticResource BooleanToVisibilityConverter}}"></Image>
                                 <Image Source="/GraphNodeManagerViewExtension;component/Images/IsInput.png"
                                        ToolTip="{x:Static p:Resources.Title_IsInput}"
-                                       Style="{StaticResource ImageStyle}" 
+                                       Style="{StaticResource ImageStyle}"
+                                       Width="16"
                                        Visibility="{Binding StateIsInput, Converter={StaticResource BooleanToVisibilityConverter}}"></Image>
                                 <Image Source="/GraphNodeManagerViewExtension;component/Images/IsOutput.png"
                                        ToolTip="{x:Static p:Resources.Title_IsOutput}"
-                                       Style="{StaticResource ImageStyle}" 
+                                       Style="{StaticResource ImageStyle}"
+                                       Width="16"
                                        Visibility="{Binding StateIsOutput, Converter={StaticResource BooleanToVisibilityConverter}}"></Image>
                             </StackPanel>
                         </DataTemplate>
@@ -180,10 +184,12 @@
                                 <Image Source="/GraphNodeManagerViewExtension;component/Images/Frozen.png" 
                                        ToolTip="{x:Static p:Resources.Title_Frozen}"
                                        Style="{StaticResource ImageStyle}"
+                                       Width="16"
                                        Visibility="{Binding StatusIsFrozen, Converter={StaticResource BooleanToVisibilityConverter}}"></Image>
                                 <Image Source="/GraphNodeManagerViewExtension;component/Images/Hidden.png"
                                        ToolTip="{x:Static p:Resources.Title_PreviewOff}"
-                                       Style="{StaticResource ImageStyle}" 
+                                       Style="{StaticResource ImageStyle}"
+                                       Width="16"
                                        Visibility="{Binding StatusIsHidden, Converter={StaticResource BooleanToVisibilityConverter}}"></Image>
                                 <controls:InfoBubbleControl 
                                     Margin="3 0" 
@@ -216,11 +222,12 @@
                                                VerticalAlignment="Center"
                                                HorizontalAlignment="Center"
                                                Margin="-1 0 0 0"
-                                               FontSize="8"/>
+                                               FontSize="9"/>
                                 </Border>
                                 <Image Source="/GraphNodeManagerViewExtension;component/Images/MissingNode.png"
                                        ToolTip="{x:Static p:Resources.Title_MissingContent}"
-                                       Style="{StaticResource ImageStyle}" 
+                                       Style="{StaticResource ImageStyle}"
+                                       Width="16"
                                        Visibility="{Binding IsDummyNode, Converter={StaticResource BooleanToVisibilityConverter}}"></Image>
                             </StackPanel>
                         </DataTemplate>
@@ -235,14 +242,33 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
+                                <Grid>
+                                    <Image Source="/GraphNodeManagerViewExtension;component/Images/Union.png"
+                                       ToolTip="{x:Static p:Resources.Title_IsOutputSingleItem}"
+                                       Style="{StaticResource ImageStyle}"
+                                       Width="16"
+                                       Visibility="{Binding IsOutputSingleItem, Converter={StaticResource BooleanToVisibilityConverter}}"></Image>
+                                    <TextBlock 
+                                        ToolTip="{x:Static p:Resources.Title_IsOutputSingleItem}"
+                                        Text="{Binding TopLevelItemsNumber}"                                   
+                                        FontSize="9"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center"
+                                        Margin="-1 0 0 0"
+                                        Foreground="{StaticResource InfoBubbleEdgeNormalBrush}"                                 
+                                        Visibility="{Binding IsOutputSingleItem, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
+                                    </TextBlock>
+                                </Grid>
                                 <Image Source="/GraphNodeManagerViewExtension;component/Images/EmptyList.png"
                                        ToolTip="{x:Static p:Resources.Title_EmptyList}"
-                                       Style="{StaticResource ImageStyle}" 
+                                       Style="{StaticResource ImageStyle}"
                                        Visibility="{Binding IsEmptyList, Converter={StaticResource BooleanToVisibilityConverter}}"></Image>
                                 <Image Source="/GraphNodeManagerViewExtension;component/Images/Null.png"
                                        ToolTip="{x:Static p:Resources.Title_Null}"
-                                       Style="{StaticResource ImageStyle}" 
+                                       Style="{StaticResource ImageStyle}"
+                                       Width="16"
                                        Visibility="{Binding IsNull, Converter={StaticResource BooleanToVisibilityConverter}}"></Image>
+                               
                             </StackPanel>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
@@ -347,7 +373,7 @@
                         Width="34"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Top"                      
-                        Margin="0 3 7 15"                        
+                        Margin="0 9 7 0"                        
                         FontWeight="Regular"
                         Style="{StaticResource ButtonStyle1}"
                         Click="ExportButton_OnClick"

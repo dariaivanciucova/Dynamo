@@ -215,9 +215,10 @@ namespace Dynamo.GraphNodeManager
             FilterItems.Add(new FilterViewModel(this){Name = Resources.Title_IsInput, FilterImage = ResourceUtilities.ConvertToImageSource(Properties.Resources.IsInput) });
             FilterItems.Add(new FilterViewModel(this){Name = Resources.Title_IsOutput, FilterImage = ResourceUtilities.ConvertToImageSource(Properties.Resources.IsOutput) });
             FilterItems.Add(new FilterViewModel(this){Name = Resources.Title_MissingContent, FilterImage = ResourceUtilities.ConvertToImageSource(Properties.Resources.MissingNode) });
+            FilterItems.Add(new FilterViewModel(this){Name = Resources.Title_PreviewOff, FilterImage = ResourceUtilities.ConvertToImageSource(Properties.Resources.Hidden) });
+           /* FilterItems.Add(new FilterViewModel(this){Name = Resources.Title_Package});*/
             FilterItems.Add(new FilterViewModel(this){Name = Resources.Title_Null, FilterImage = ResourceUtilities.ConvertToImageSource(Properties.Resources.Null) });
             FilterItems.Add(new FilterViewModel(this){Name = Resources.Title_Warning, FilterImage = ResourceUtilities.ConvertToImageSource(Properties.Resources.Alert) });
-            FilterItems.Add(new FilterViewModel(this){Name = Resources.Title_PreviewOff, FilterImage = ResourceUtilities.ConvertToImageSource(Properties.Resources.Hidden) });
 
             filterDictionary = new Dictionary<string, FilterViewModel>(FilterItems.ToDictionary(fi => fi.Name));
         }
@@ -396,7 +397,7 @@ namespace Dynamo.GraphNodeManager
                 {
                     e.Accepted = false;
                     return;
-                }
+                }             
                 if (!nvm.IsInfo && filterDictionary[Resources.Title_Information].IsFilterOn)
                 {
                     e.Accepted = false;
@@ -427,6 +428,11 @@ namespace Dynamo.GraphNodeManager
                     e.Accepted = false;
                     return;
                 }
+/*                if (!nvm.IsPartOfPackage && filterDictionary[Resources.Title_Package].IsFilterOn)
+                {
+                    e.Accepted = false;
+                    return;
+                }*/
             }
             catch(Exception err)
             {
