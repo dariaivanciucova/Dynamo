@@ -43,6 +43,7 @@ namespace CoreNodeModelsWpf.Charts
     public class XYLineChartNodeModel : NodeModel
     {
         #region Properties
+        private Random rnd = new Random();
 
         /// <summary>
         /// A list of Labels for each line to be plotted.
@@ -62,7 +63,7 @@ namespace CoreNodeModelsWpf.Charts
         /// <summary>
         /// A list of color values, one for each plotted line.
         /// </summary>
-        public List<Color> Colors { get; set; }
+        public List<SolidColorBrush> Colors { get; set; }
 
         /// <summary>
         /// Triggers when port is connected or disconnected
@@ -168,7 +169,7 @@ namespace CoreNodeModelsWpf.Charts
             Labels = new List<string>();
             XValues = new List<List<double>>();
             YValues = new List<List<double>>();
-            Colors = new List<Color>();
+            Colors = new List<SolidColorBrush>();
 
             var anyNullData = labels == null || xValues == null || yValues == null;
 
@@ -205,7 +206,9 @@ namespace CoreNodeModelsWpf.Charts
                     YValues.Add(outputYValues);
 
                     Color color = Utilities.Colors.GetColor();
-                    Colors.Add(color);
+                    SolidColorBrush brush = new SolidColorBrush(color);
+                    brush.Freeze();
+                    Colors.Add(brush);
                 }
 
                 Utilities.Colors.ResetColors();
@@ -235,7 +238,9 @@ namespace CoreNodeModelsWpf.Charts
                     {
                         var dynColor = (DSCore.Color)colors[i];
                         var convertedColor = Color.FromArgb(dynColor.Alpha, dynColor.Red, dynColor.Green, dynColor.Blue);
-                        Colors.Add(convertedColor);
+                        SolidColorBrush brush = new SolidColorBrush(convertedColor);
+                        brush.Freeze();
+                        Colors.Add(brush);
                     }
                     catch(Exception)
                     {

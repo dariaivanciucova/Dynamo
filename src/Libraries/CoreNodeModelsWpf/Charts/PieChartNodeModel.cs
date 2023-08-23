@@ -43,6 +43,7 @@ namespace CoreNodeModelsWpf.Charts
     public class PieChartNodeModel : NodeModel
     {
         #region Properties
+        private Random rnd = new Random();
         /// <summary>
         /// Pie chart labels.
         /// </summary>
@@ -56,7 +57,7 @@ namespace CoreNodeModelsWpf.Charts
         /// <summary>
         /// Pie chart color values.
         /// </summary>
-        public List<Color> Colors { get; set; }
+        public List<SolidColorBrush> Colors { get; set; }
 
         /// <summary>
         /// Triggers when port is connected or disconnected
@@ -161,7 +162,7 @@ namespace CoreNodeModelsWpf.Charts
             // Update chart properties
             Labels = new List<string>();
             Values = new List<double>();
-            Colors = new List<Color>();
+            Colors = new List<SolidColorBrush>();
 
             var anyNullData = keys == null || values == null;
 
@@ -183,7 +184,9 @@ namespace CoreNodeModelsWpf.Charts
                     Labels.Add((string)keys[i]);
                     Values.Add(System.Convert.ToDouble(values[i]));
                     Color color = Utilities.Colors.GetColor();
-                    Colors.Add(color);
+                    SolidColorBrush brush = new SolidColorBrush(color);
+                    brush.Freeze();
+                    Colors.Add(brush);
                 }
 
                 Utilities.Colors.ResetColors();
@@ -196,7 +199,9 @@ namespace CoreNodeModelsWpf.Charts
                     Values.Add(System.Convert.ToDouble(values[i]));
                     var dynColor = (DSCore.Color)colors[i];
                     var convertedColor = Color.FromArgb(dynColor.Alpha, dynColor.Red, dynColor.Green, dynColor.Blue);
-                    Colors.Add(convertedColor);
+                    SolidColorBrush brush = new SolidColorBrush(convertedColor);
+                    brush.Freeze();
+                    Colors.Add(brush);
                 }
             }
 

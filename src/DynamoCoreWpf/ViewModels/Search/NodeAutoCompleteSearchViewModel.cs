@@ -615,9 +615,10 @@ namespace Dynamo.ViewModels
         /// </summary>
         /// <returns> Returns a list with a maximum MaxNumSearchResults elements.</returns>
         /// <param name="search"> The search query </param>
-        internal IEnumerable<NodeSearchElementViewModel> SearchNodeAutocomplete(string search)
+        /// <param name="useLucene"> Temporary flag that will be used for searching using Lucene.NET </param>
+        internal IEnumerable<NodeSearchElementViewModel> SearchNodeAutocomplete(string search, bool useLucene)
         {
-            if (LuceneSearchUtilityNodeAutocomplete != null)
+            if (useLucene)
             {
                 //The DirectoryReader and IndexSearcher have to be assigned after commiting indexing changes and before executing the Searcher.Search() method, otherwise new indexed info won't be reflected
                 LuceneSearchUtilityNodeAutocomplete.dirReader = LuceneSearchUtilityNodeAutocomplete.writer?.GetReader(applyAllDeletes: true);
@@ -657,7 +658,10 @@ namespace Dynamo.ViewModels
 
                 return candidates;
             }
-            return null;
+            else
+            {
+                return Search(search);
+            }
         }
 
         /// <summary>
@@ -690,7 +694,7 @@ namespace Dynamo.ViewModels
                     //Write the Lucene documents to memory
                     LuceneSearchUtilityNodeAutocomplete.CommitWriterChanges();
                         
-                    var luceneResults = SearchNodeAutocomplete(input);
+                    var luceneResults = SearchNodeAutocomplete(input, true);
                     var foundNodesModels = luceneResults.Select(x => x.Model);
                     var foundNodes = foundNodesModels.Select(MakeNodeSearchElementVM);
 

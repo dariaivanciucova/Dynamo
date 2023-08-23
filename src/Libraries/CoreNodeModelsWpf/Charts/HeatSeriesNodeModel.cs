@@ -44,6 +44,7 @@ namespace CoreNodeModelsWpf.Charts
     public class HeatSeriesNodeModel : NodeModel
     {
         #region Properties
+        private Random rnd = new Random();
 
         /// <summary>
         /// A list of X-axis Labels.

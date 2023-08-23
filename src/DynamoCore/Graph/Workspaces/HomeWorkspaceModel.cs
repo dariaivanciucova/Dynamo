@@ -732,13 +732,13 @@ namespace Dynamo.Graph.Workspaces
         private void OnUpdateGraphCompleted(AsyncTask task)
         {
             var updateTask = (UpdateGraphAsyncTask)task;
-            var warnings = new Dictionary<Guid, string>();
+            var messages = new Dictionary<Guid, string>();
 
             // Runtime warnings take precedence over build warnings.
             foreach (var warning in updateTask.RuntimeWarnings)
             {
                 var message = string.Join(Environment.NewLine, warning.Value.Select(w => w.Message));
-                warnings.Add(warning.Key, message);
+                messages.Add(warning.Key, message);
             }
 
             foreach (var warning in updateTask.BuildWarnings)
@@ -748,12 +748,12 @@ namespace Dynamo.Graph.Workspaces
                 // But for cyclic dependency warnings, it is
                 // easier to understand to report a build warning.
                 string message = string.Empty;
-                if (warnings.ContainsKey(warning.Key))
+                if (messages.ContainsKey(warning.Key))
                 {
                     if (!warning.Value.Any(w => w.ID == ProtoCore.BuildData.WarningID.InvalidStaticCyclicDependency))
                         continue;
 
-                    warnings.Remove(warning.Key);
+                    messages.Remove(warning.Key);
                     message = string.Join("\n", warning.Value.
                         Where(w => w.ID == ProtoCore.BuildData.WarningID.InvalidStaticCyclicDependency).
                         Select(w => w.Message));
@@ -765,33 +765,20 @@ namespace Dynamo.Graph.Workspaces
 
                 if (!string.IsNullOrEmpty(message))
                 {
-                    warnings.Add(warning.Key, message);
+                    messages.Add(warning.Key, message);
                 }
             }
 
             var workspace = updateTask.TargetedWorkspace;
-            foreach (var warning in warnings)
+            foreach (var message in messages)
             {
-                var guid = warning.Key;
+                var guid = message.Key;
                 var node = workspace.Nodes.FirstOrDefault(n => n.GUID == guid);
                 if (node == null)
                     continue;
                 using (node.PropertyChangeManager.SetPropsToSuppress(nameof(NodeModel.ToolTipText), nameof(NodeModel.Infos), nameof(NodeModel.State)))
                 {
-                    node.Warning(warning.Value); // Update node warning message.
-                }
-            }
-
-            // Update node info message.
-            foreach (var info in updateTask.RuntimeInfos)
-            {
-                var guid = info.Key;
-                var node = workspace.Nodes.FirstOrDefault(n => n.GUID == guid);
-                if (node == null)
-                    continue;
-                using (node.PropertyChangeManager.SetPropsToSuppress(nameof(NodeModel.ToolTipText), nameof(NodeModel.Infos), nameof(NodeModel.State)))
-                {
-                    node.Info(string.Join(Environment.NewLine, info.Value.Select(w => w.Message)));
+                    node.Warning(message.Value); // Update node warning message.
                 }
             }
 
@@ -805,8 +792,8 @@ namespace Dynamo.Graph.Workspaces
             // Dispatch the failure message display for execution on UI thread.
             // 
             EvaluationCompletedEventArgs e = task.Exception == null || IsTestMode
-                ? new EvaluationCompletedEventArgs(true,warnings.Keys,null)
-                : new EvaluationCompletedEventArgs(true, warnings.Keys, task.Exception);
+                ? new EvaluationCompletedEventArgs(true,messages.Keys,null)
+                : new EvaluationCompletedEventArgs(true, messages.Keys, task.Exception);
 
             EvaluationCount ++;
 

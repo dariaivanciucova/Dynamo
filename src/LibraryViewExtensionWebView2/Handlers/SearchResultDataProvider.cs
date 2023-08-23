@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -23,6 +23,9 @@ namespace Dynamo.LibraryViewExtensionWebView2.Handlers
     /// </summary>
     class SearchResultDataProvider : NodeItemDataProvider
     {
+        public const string serviceIdentifier = "/nodeSearch";
+        private MethodInfo searchMethod = typeof(NodeSearchModel).GetMethod("Search", BindingFlags.Instance|BindingFlags.NonPublic);
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -47,8 +50,11 @@ namespace Dynamo.LibraryViewExtensionWebView2.Handlers
         /// <returns></returns>
         public override Stream GetResource(string searchText, out string extension)
         {
+
             var text = Uri.UnescapeDataString(searchText);
-            var elements = model.Search(text, 0, null);
+            //TODO replace this with direct call.
+            var elements = searchMethod.Invoke(model,new object[] { text,0,null }) as IEnumerable<NodeSearchElement>;
+
             extension = "json";
             return GetNodeItemDataStream(elements, true);
         }

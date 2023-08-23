@@ -110,8 +110,6 @@ namespace Dynamo.Notifications
 
         async void SuspendCoreWebviewAsync()
         {
-            if (notificationUIPopup == null) return;
-
             notificationUIPopup.IsOpen = false;
             notificationUIPopup.webView.Visibility = Visibility.Hidden;
 

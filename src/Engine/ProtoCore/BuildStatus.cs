@@ -73,9 +73,6 @@ namespace ProtoCore
         }
     }
 
-    /// <summary>
-    /// VM print out message
-    /// </summary>
     public class OutputMessage
     {
         public enum MessageType { Info, Warning, Error }
@@ -98,16 +95,6 @@ namespace ProtoCore
             FilePath = filePath;
             Line = line;
             Column = column;
-        }
-
-        // A constructor for info messages without line and colume.
-        internal OutputMessage(MessageType type, string message, string filePath)
-        {
-            Type = type;
-            Message = message;
-            FilePath = filePath;
-            Line = -1;
-            Column = -1;
         }
 
         public MessageType Type { get; private set; }
